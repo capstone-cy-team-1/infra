@@ -34,3 +34,17 @@ resource "google_compute_firewall" "allow_dns" {
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["allow-dns"]
 }
+
+resource "google_compute_firewall" "allow_outbound_tcp" {
+  name      = "allow-outbound-tcp"
+  network   = data.google_compute_network.default.name
+  direction = "EGRESS"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["allow-outbound-tcp"]
+}
