@@ -5,6 +5,12 @@
 *.tfstate
 *.tfstate.*
 
+# TF Lock File
+.terraform.lock.hcl
+
+# Rough files
+commands.txt
+
 # Crash log files
 crash.log
 
