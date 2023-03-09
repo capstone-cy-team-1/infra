@@ -1,8 +1,8 @@
-resource "google_compute_instance" "web_server" {
-  name                      = "web-server"
+resource "google_compute_instance" "victim_dev_server" {
+  name                      = "victim-dev-server"
   machine_type              = "e2-micro"
   zone                      = "us-central1-a"
-  tags                      = ["https-server","http-server"]
+  tags                      = ["victim-allow-outbound-tcp", "victim-allow-ssh"]
   allow_stopping_for_update = true
 
   boot_disk {
@@ -12,7 +12,37 @@ resource "google_compute_instance" "web_server" {
   }
 
   network_interface {
-    network = "default"
+    network    = google_compute_network.victim_vpc.self_link
+    subnetwork = google_compute_subnetwork.victim_private_subnet.self_link
+
+  }
+
+  metadata = {
+    "ssh-keys" = <<EOT
+      nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
+      shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
+     EOT
+  }
+
+  metadata_startup_script = "echo hi > /test.txt"
+}
+
+resource "google_compute_instance" "victim_web_server" {
+  name                      = "victim-web-server"
+  machine_type              = "e2-micro"
+  zone                      = "us-central1-a"
+  tags                      = ["https-server", "http-server", "victim-allow-ssh"]
+  allow_stopping_for_update = true
+
+  boot_disk {
+    initialize_params {
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+    }
+  }
+
+  network_interface {
+    network    = google_compute_network.victim_vpc.self_link
+    subnetwork = google_compute_subnetwork.victim_public_subnet.self_link
 
     access_config {
     }
@@ -28,11 +58,11 @@ resource "google_compute_instance" "web_server" {
   metadata_startup_script = "echo hi > /test.txt"
 }
 
-resource "google_compute_instance" "caldera_server" {
-  name                      = "caldera-server"
+resource "google_compute_instance" "victim_verdaccio_server" {
+  name                      = "victim-verdaccio-server"
   machine_type              = "e2-micro"
   zone                      = "us-central1-a"
-  tags                      = ["allow-caldera", "allow-outbound-tcp"]
+  tags                      = ["victim-allow-outbound-tcp"]
   allow_stopping_for_update = true
 
   boot_disk {
@@ -42,78 +72,15 @@ resource "google_compute_instance" "caldera_server" {
   }
 
   network_interface {
-    network = "default"
+    network    = google_compute_network.victim_vpc.self_link
+    subnetwork = google_compute_subnetwork.victim_private_subnet.self_link
 
-    access_config {
-    }
   }
 
   metadata = {
     "ssh-keys" = <<EOT
       nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
       shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
-      peterpsyllos:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMnoCRQ2vFZMyS/K+xCS5eLzEKcj9GOhllJk6X50nJ8D VPSs
-     EOT
-  }
-
-  metadata_startup_script = "echo hi > /test.txt"
-}
-
-resource "google_compute_instance" "dns_server" {
-  name                      = "dns-server"
-  machine_type              = "e2-micro"
-  zone                      = "us-central1-a"
-  tags                      = ["allow-dns", "allow-outbound-tcp"]
-  allow_stopping_for_update = true
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
-    }
-  }
-
-  network_interface {
-    network = "default"
-
-    access_config {
-    }
-  }
-
-  metadata = {
-    "ssh-keys" = <<EOT
-      nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
-      shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
-      parthshukla:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOdC0BXZzs2H3iAXbWf1YAJz+WEVPG+XvWtOOd15LLO VPSs
-     EOT
-  }
-
-  metadata_startup_script = "echo hi > /test.txt"
-}
-
-resource "google_compute_instance" "test_server" {
-  name                      = "test-server"
-  machine_type              = "e2-micro"
-  zone                      = "us-central1-a"
-  tags                      = ["allow-caldera", "allow-outbound-tcp"]
-  allow_stopping_for_update = true
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
-    }
-  }
-
-  network_interface {
-    network = "default"
-
-    access_config {
-    }
-  }
-
-  metadata = {
-    "ssh-keys" = <<EOT
-      shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
-      nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
      EOT
   }
 
