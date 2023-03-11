@@ -2,7 +2,7 @@ resource "google_compute_instance" "victim_dev_server" {
   name                      = "victim-dev-server"
   machine_type              = "e2-micro"
   zone                      = "us-central1-a"
-  tags                      = ["victim-allow-outbound-tcp", "victim-allow-ssh"]
+  tags                      = ["victim-allow-outbound-tcp", "victim-allow-ssh", "victim-allow-inbound-tcp"]
   allow_stopping_for_update = true
 
   boot_disk {
@@ -21,6 +21,8 @@ resource "google_compute_instance" "victim_dev_server" {
     "ssh-keys" = <<EOT
       nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
       shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
+      internal:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfdxRHYURRnt8JzXJz7/thAyZE8HswvbgbyODN+4Lyf internalSSH
+      internalnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1D6ZrH/sXZ245uAAyqoBppGXcKHpwrfXlc/AVTKyVF internalNair
      EOT
   }
 
@@ -31,7 +33,7 @@ resource "google_compute_instance" "victim_web_server" {
   name                      = "victim-web-server"
   machine_type              = "e2-micro"
   zone                      = "us-central1-a"
-  tags                      = ["https-server", "http-server", "victim-allow-ssh"]
+  tags                      = ["https-server", "http-server", "victim-allow-ssh", "victim-allow-inbound-tcp"]
   allow_stopping_for_update = true
 
   boot_disk {
@@ -62,7 +64,7 @@ resource "google_compute_instance" "victim_verdaccio_server" {
   name                      = "victim-verdaccio-server"
   machine_type              = "e2-micro"
   zone                      = "us-central1-a"
-  tags                      = ["victim-allow-outbound-tcp"]
+  tags                      = ["victim-allow-outbound-tcp", "victim-allow-ssh", "victim-allow-verdaccio", "victim-allow-inbound-tcp"]
   allow_stopping_for_update = true
 
   boot_disk {
@@ -81,6 +83,8 @@ resource "google_compute_instance" "victim_verdaccio_server" {
     "ssh-keys" = <<EOT
       nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
       shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
+      internal:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfdxRHYURRnt8JzXJz7/thAyZE8HswvbgbyODN+4Lyf internalSSH
+      internalnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1D6ZrH/sXZ245uAAyqoBppGXcKHpwrfXlc/AVTKyVF internalNair
      EOT
   }
 
