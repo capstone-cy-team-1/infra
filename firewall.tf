@@ -119,8 +119,8 @@ resource "google_compute_firewall" "victim_web_deny_outbound" {
   name      = "victim-web-deny-outbound"
   network   = google_compute_network.victim_vpc.self_link
   direction = "EGRESS"
-  
-  
+
+
 
   deny {
     protocol = "all"
