@@ -22,7 +22,6 @@ resource "google_compute_instance" "victim_dev_server" {
       nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
       shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
       internal:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfdxRHYURRnt8JzXJz7/thAyZE8HswvbgbyODN+4Lyf internalSSH
-      internalnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1D6ZrH/sXZ245uAAyqoBppGXcKHpwrfXlc/AVTKyVF internalNair
      EOT
   }
 
@@ -84,7 +83,6 @@ resource "google_compute_instance" "victim_verdaccio_server" {
       nishantjain:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwxasd2BwkVvmGmQXAgZGAqPVF6+0tsNrPfthFTWxCj VPSs
       shreyasnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKanUfuuuebaukeQftTpQCXznVpSC7MGWR1JHBImZ97E VPSs
       internal:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfdxRHYURRnt8JzXJz7/thAyZE8HswvbgbyODN+4Lyf internalSSH
-      internalnair:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1D6ZrH/sXZ245uAAyqoBppGXcKHpwrfXlc/AVTKyVF internalNair
      EOT
   }
 
